@@ -1,0 +1,136 @@
+
+:focus,
+:hover,
+:active {
+	outline: none;
+}
+
+
+
+
+.rootMinWindow {top:0px !important;left: 0px !important;}
+.rootMinWindow #app #terminal {height: 0px !important;transition: 0s ;}
+.rootMinWindow #app #terminal #window {display: grid !important;padding: 0 3px !important;border-bottom-right-radius: 50%;border-top-right-radius: 50%;position: fixed;filter: blur(0.6px);}
+.rootMinWindow #app #terminal #window .cmd-btn.red {display: none !important;}
+.rootMinWindow #app #terminal #window .cmd-btn.yellow {display: none !important;}
+.rootMinWindow #app #terminal #window .cmd-btn.green {margin-right: 5px !important;}
+
+
+.rootMinWindow #app #terminal #window span {display: none;}
+.rootMinWindow #app #terminal #field {display: none;}
+
+#Meta-root {position: fixed;z-index: 10000;min-width: 500px;font-family: Roboto}
+#Meta-root #app {
+	/* height: 100vh; */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#Meta-root #app #terminal {
+	/* width: 90vw;
+	max-width: 900px;
+	height: 550px; */
+    width: 100%;
+    height: 300px;
+	transition: .2s;
+}
+#Meta-root #app #terminal #window {
+	
+	height: 40px;
+	display: flex;
+	align-items: center;
+	padding: 0 15px;
+	cursor: move;
+}
+#Meta-root #app #terminal #window .cmd-btn {
+	cursor: pointer;
+	margin-right: 10px;
+	border: none;
+	height: 13px;
+	width: 13px;
+	border-radius: 50%;
+	box-shadow: 0 2px 2px #33333375;
+}
+#Meta-root #app #terminal #window .red {
+	background-color: #FF4136;
+}
+.error {
+	color: #FF4136;
+}
+#Meta-root #app #terminal #window .yellow {
+	background-color: #FFDC00;
+}
+.info {
+	color: #FFDC00;
+}
+#Meta-root #app #terminal #window .green {
+	background-color: #2ECC40;
+}
+#Meta-root #app #terminal #window #title,
+#Meta-root #app #terminal #field  {
+	font-size: .85rem;
+}
+#Meta-root #app #terminal #window #title {
+	margin-left: auto;
+}
+#Meta-root #app #terminal #field {
+    backdrop-filter: blur(5px);
+	height: calc(100% - 40px);
+	padding: 5px;
+	overflow: auto;
+/* 	I'd like to get white-space: break-spaces to work
+		but it won't for some reason. In the meantime,
+		overflow-wrap: break-word will have to do. */
+	overflow-wrap: break-word;
+}
+#Meta-root #app #terminal #field::-webkit-scrollbar {
+	width: 10px;
+}
+#Meta-root #app #terminal #field.dark::-webkit-scrollbar-thumb {
+	background-color: #333444;
+}
+#Meta-root #app #terminal #field.light::-webkit-scrollbar-thumb {
+	background-color: #ACA9BB;
+}
+#Meta-root #app #terminal #field>div {
+	min-height: 20px;
+	width: 100%;
+	cursor: text;
+}
+#Meta-root #app #terminal #field #input-container {
+	display: flex;
+}
+#Meta-root #app #terminal #field #query,
+#Meta-root #app #terminal #field #cursor {
+	display: inline-block;
+}
+#Meta-root #app #terminal #field #query {
+	margin-right: 10px;
+	white-space: pre-line;
+}
+#Meta-root #app #terminal #field #cursor {
+	position: relative;
+	bottom: -2px;
+	left: 2px;
+	width: .5rem;
+	height: 3px;
+}
+
+
+
+@keyframes blink-dark {
+  0%, 100% {
+    background-color: #F4F4F4;
+  }
+  50% {
+    background-color: transparent;
+  }
+}
+@keyframes blink-light {
+  0%, 100% {
+    background-color: #474554;
+  }
+  50% {
+    background-color: transparent;
+  }
+}
