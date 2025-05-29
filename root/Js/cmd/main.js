@@ -702,12 +702,12 @@ const UserText = ({ input, theme }) =>
     React.createElement("span", null, input) /*#__PURE__*/,
     React.createElement("div", { id: "cursor", style: theme })
   );
-
+// -------------------------------------------------
 ReactDOM.render(
   /*#__PURE__*/ React.createElement(App, null),
   document.querySelector("#Meta-root")
 );
-
+document.getElementById("Meta-root").className = "rootMinWindow";
 //
 
 function pdb(p) {
