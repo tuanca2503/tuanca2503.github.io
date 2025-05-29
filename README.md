@@ -1,4 +1,4 @@
-# 🧑‍💻 Personal Portfolio
+# Personal Portfolio
 
 Welcome to my portfolio website!  
 This project showcases who I am, what I’ve built, and how to connect with me.
@@ -7,7 +7,7 @@ This project showcases who I am, what I’ve built, and how to connect with me.
 
 ---
 
-## ✨ Features
+## Features
 
 - Clean, responsive layout for desktop and mobile
 - About me section with brief introduction
@@ -17,7 +17,7 @@ This project showcases who I am, what I’ve built, and how to connect with me.
 
 ---
 
-## 🧠 About Me
+## About Me
 
 I’m Tuấn, a developer who loves building clean, meaningful user experiences.  
 This site serves as a digital version of myself — a place to share my work and ideas.
