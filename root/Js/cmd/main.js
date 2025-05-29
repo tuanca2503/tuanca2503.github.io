@@ -5,7 +5,7 @@ const App = () => {
       ? {
           app: { backgroundColor: /*'#333444'*/ "" },
           terminal: { boxShadow: "0 2px 5px #111" },
-          window: { backgroundColor: "#222345", color: "#F4F4F4" },
+          window: { backgroundColor: "#202026", color: "#F4F4F4" },
           field: {
             backgroundColor: "rgba(16 18 27 / 70%)",
             color: "#F4F4F4",

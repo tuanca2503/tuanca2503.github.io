@@ -16,6 +16,7 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: white;
+  cursor: pointer;
 }
 
 * {
@@ -28,11 +29,7 @@
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
-/**
- * -------------------
- *  Defult CSS 
- * -------------------
- */
+
 html {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -3888,4 +3885,25 @@ BLOG Pagination
 .mh-about-tag-2 ul {
   margin-bottom: 30px;
   margin-top: 20px;
+}
+
+.h-100vh {
+  height: 100vh;
+}
+.w-full {
+  width: 100%;
+}
+.h-full {
+  height: 100%;
+}
+.min-h-930px {
+  min-height: 930px;
+}
+.gap-m1t-100-e-10 {
+  gap: 100px;
+}
+.d-f-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

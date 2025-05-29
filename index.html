@@ -65,7 +65,7 @@
     <div
       id="RotatePhone"
       style="
-        position: absolute;
+        position: fixed;
         width: 100%;
         height: 100%;
         display: none;
@@ -73,15 +73,17 @@
         z-index: 200;
         background-position: center;
         overflow: hidden;
-        text-align: center;
+        align-items: center;
+        justify-content: center;
       ">
       <p
         style="
           position: relative;
-          font-size: 40px;
+          font-size: 96px;
           color: #0597ab;
           font-weight: bold;
-          top: 50px;
+          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+          -webkit-text-stroke: 1px black;
         ">
         CLICK OR
       </p>
@@ -90,7 +92,7 @@
       (function ($) {
         if (window.orientation === 0 || window.orientation === 180) {
           document.getElementById("body").style.overflowY = "hidden";
-          document.getElementById("RotatePhone").style.display = "block";
+          document.getElementById("RotatePhone").style.display = "flex";
         }
         //
         document.getElementById("RotatePhone").onclick = function () {
@@ -98,10 +100,9 @@
           document.getElementById("RotatePhone").style.display = "none";
         };
         window.addEventListener("orientationchange", function () {
-          console.log(window.orientation);
           if (window.orientation === 0 || window.orientation === 180) {
             document.getElementById("body").style.overflowY = "hidden";
-            document.getElementById("RotatePhone").style.display = "block";
+            document.getElementById("RotatePhone").style.display = "flex";
           } else if (window.orientation === 90 || window.orientation === -90) {
             document.getElementById("body").style.overflowY = "auto";
             document.getElementById("RotatePhone").style.display = "none";
@@ -109,23 +110,14 @@
         });
       })(window.jQuery);
     </script>
-    <!--
-        ===================
-           CMD
-        ===================
-        -->
+    <!-- CMD -->
     <div id="Meta-root"></div>
-
-    <!--
-        ===================
-           NAVIGATION
-        ===================
-        -->
+    <!-- HEAD -->
     <header
       class="black-bg mh-header mh-fixed-nav nav-scroll mh-xs-mobile-nav"
       id="mh-header">
       <div class="container">
-        <div class="row">
+        <div class="">
           <nav class="navbar navbar-expand-lg mh-nav nav-btn">
             <a class="navbar-brand" href="#">
               <img
@@ -176,17 +168,10 @@
         </div>
       </div>
     </header>
-
-    <!--
-        ===================
-           Home
-        ===================
-        -->
-    <section class="mh-home image-bg relative" id="mh-home">
-      <div class="img-foverlay img-color-overlay">
-        <!--
-                Video section
-                -->
+    <!-- HOME -->
+    
+    <section class="mh-home image-bg relative h-100vh min-h-930px" id="mh-home">
+      <div class="img-foverlay img-color-overlay w-full h-full">
         <div class="section-video">
           <div
             id="imgvid"
@@ -200,10 +185,10 @@
             "></div>
         </div>
 
-        <div class="container">
+        <div class="w-full h-full container">
           <div
-            class="row section-separator xs-column-reverse vertical-middle-content home-padding">
-            <div class="col-sm-6">
+            class="gap-m1t-100-e-10 row section-separator xs-column-reverse vertical-middle-content home-padding">
+            <div class="">
               <div class="mh-header-info">
                 <div
                   class="mh-promo wow fadeInUp"
@@ -320,7 +305,7 @@
                 </ul>
               </div>
             </div>
-            <div class="col-sm-6">
+            <div class="">
               <div
                 class="hero-img wow fadeInUp"
                 data-wow-duration="0.8s"
@@ -349,12 +334,12 @@
            ABOUT
         ===================
         -->
-    <section class="mh-about" id="mh-about">
+    <section class="mh-about row section-separator" id="mh-about">
       <div class="container">
         <div class="row section-separator">
           <div class="col-sm-12 col-md-6">
             <div
-              class="mh-about-img shadow-2 wow fadeInUp"
+              class="d-f-center mh-about-img shadow-2 wow fadeInUp"
               data-wow-duration="0.8s"
               data-wow-delay="0.4s"
               style="
@@ -450,7 +435,7 @@
     <section class="mh-service">
       <div class="container">
         <div class="row section-separator">
-          <div
+        <div
             class="col-sm-12 text-center section-title wow fadeInUp"
             data-wow-duration="0.8s"
             data-wow-delay="0.2s"
