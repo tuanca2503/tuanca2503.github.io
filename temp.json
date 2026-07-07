@@ -1,0 +1,506 @@
+{
+  "projects": [
+    {
+      "id": "agent",
+      "label": "Core Agent",
+      "status": "ideation",
+      "lang": [
+        "rust",
+        "python"
+      ],
+      "description": "Core Agent là lớp thực thi AI tự động hóa tác vụ hệ thống — điều khiển chuột, bàn phím, tương tác giao diện và phản hồi sự kiện theo thời gian thực. Hệ thống tích hợp bộ nhớ kép (dài hạn để học thói quen, ngắn hạn để quản lý ngữ cảnh phiên làm việc), có khả năng tự học, thích nghi và tự sửa lỗi. Cơ chế an toàn bao gồm phân quyền, đánh giá rủi ro, giám sát mạng và cách ly mối đe dọa. Kiến trúc plugin cho phép mở rộng khả năng độc lập mà không can thiệp vào core.",
+      "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><rect x=\"6\" y=\"6\" width=\"12\" height=\"12\" rx=\"1\"/><rect x=\"9\" y=\"9\" width=\"6\" height=\"6\"/><path d=\"M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2\"/></svg>",
+      "links": {
+        "github": {
+          "src": "https://github.com/tuanca2503/core-agent",
+          "visibility": "private"
+        },
+        "demo": null
+      },
+      "highlights": [
+        "Tool calling & action execution",
+        "Retrieval-Augmented Generation (RAG)",
+        "Real-time Safety & Permission Control",
+        "Self-learning & Adaptive Behavior",
+        "OS-level Interaction",
+        "Vision & Screen Understanding"
+      ],
+      "specs": [
+        {
+          "label": "STATUS",
+          "value": "ideation",
+          "accent": true
+        },
+        {
+          "label": "STACK",
+          "value": "Rust · Python"
+        },
+        {
+          "label": "LAYER",
+          "value": "Execution"
+        }
+      ],
+      "breakdown": [
+        {
+          "label": "Brain",
+          "value": 40
+        },
+        {
+          "label": "Tools",
+          "value": 25
+        },
+        {
+          "label": "Security",
+          "value": 15
+        },
+        {
+          "label": "Memory",
+          "value": 10
+        },
+        {
+          "label": "Skills & Plugins",
+          "value": 10
+        }
+      ],
+      "roadmap": [
+        {
+          "label": "Ideation",
+          "status": "active"
+        },
+        {
+          "label": "Core",
+          "status": "planned"
+        },
+        {
+          "label": "Testing & Security Audit",
+          "status": "planned"
+        },
+        {
+          "label": "Plugins",
+          "status": "planned"
+        },
+        {
+          "label": "Beta",
+          "status": "planned"
+        },
+        {
+          "label": "Release",
+          "status": "planned"
+        }
+      ],
+      "content": "# Core Agent\n\n> Lớp thực thi AI tự động hóa tác vụ hệ thống \u2014 điều khiển chuột, bàn phím, tương tác giao diện và phản hồi sự kiện theo thời gian thực. Tích hợp bộ nhớ kép, kiểm soát an toàn và kiến trúc plugin độc lập với core.\n\n\n## Overview\n\nCore Agent không phải là một chatbot \u2014 nó là **lớp hành động**. Khi AI brain đưa ra quyết định, Core Agent là thứ biến quyết định đó thành hành động thực sự trên hệ thống: mở ứng dụng, điền form, gọi API, xử lý file, giám sát sự kiện.\n\nHệ thống được thiết kế theo nguyên tắc: **an toàn trước, hành động sau** \u2014 mọi tác vụ đều đi qua lớp đánh giá rủi ro trước khi thực thi. Plugin mở rộng khả năng của agent nhưng hoàn toàn tách biệt, không can thiệp vào core.\n\n\n## Architecture\n\n```mermaid\ngraph TB\n    subgraph BRAIN[\"🧠 Brain Layer\"]\n        LLM[\"LLM Engine\"]\n        PLANNER[\"Planner\"]\n        RAG[\"RAG Engine\"]\n    end\n\n    subgraph CORE[\"⚙️ Core Agent\"]\n        EXEC[\"Executor\"]\n        GUARD[\"Risk Guard\"]\n        PERM[\"Permission Gate\"]\n    end\n\n    subgraph MEMORY[\"🗃️ Memory System\"]\n        STM[\"Short-term Memory\\n(Session Context)\"]\n        LTM[\"Long-term Memory\\n(Persistent Store)\"]\n    end\n\n    subgraph TOOLS[\"🔧 Tool Layer\"]\n        OS_TOOL[\"OS Interaction\"]\n        UI_TOOL[\"UI Automation\"]\n        VISION[\"Vision / Screen\"]\n        TASK[\"Task Manager\"]\n        TELE[\"Telemetry\"]\n    end\n\n    subgraph PLUGIN[\"🔌 Plugin System (Isolated)\"]\n        P1[\"Plugin A\"]\n        P2[\"Plugin B\"]\n        P3[\"Plugin N...\"]\n    end\n\n    LLM --> PLANNER\n    RAG --> LLM\n    PLANNER --> EXEC\n    EXEC --> GUARD\n    GUARD --> PERM\n    PERM --> OS_TOOL & UI_TOOL & VISION & TASK & TELE\n    STM <--> LLM\n    LTM <--> RAG\n    EXEC -.-> PLUGIN\n\n    classDef brain fill:#6C63FF,color:#fff,stroke:none\n    classDef core fill:#2D9CDB,color:#fff,stroke:none\n    classDef memory fill:#F2994A,color:#fff,stroke:none\n    classDef tool fill:#27AE60,color:#fff,stroke:none\n    classDef plugin fill:#828282,color:#fff,stroke:none,stroke-dasharray:4\n\n    class LLM,PLANNER,RAG brain\n    class EXEC,GUARD,PERM core\n    class STM,LTM memory\n    class OS_TOOL,UI_TOOL,VISION,TASK,TELE tool\n    class P1,P2,P3 plugin\n```\n\n\n## How It Works\n\n```mermaid\nsequenceDiagram\n    actor User as 👤 Người dùng\n    participant Brain as 🧠 LLM Brain\n    participant Planner as 📋 Planner\n    participant Guard as 🛡️ Risk Guard\n    participant Perm as 🔐 Permission Gate\n    participant Exec as ⚙️ Executor\n    participant System as 💻 System\n\n    User->>Brain: Yêu cầu / Sự kiện\n    Brain->>Planner: Chuỗi hành động\n    Planner->>Guard: Đánh giá rủi ro\n\n    alt Rủi ro cao\n        Guard->>User: Yêu cầu xác nhận\n        User-->>Guard: Phê duyệt / Từ chối\n    else Rủi ro thấp\n        Guard->>Perm: Kiểm tra quyền\n        Perm->>Exec: Cho phép thực thi\n        Exec->>System: Hành động thực\n        System-->>Exec: Kết quả\n        Exec-->>Brain: Phản hồi & học\n    end\n```\n\n\n## Core Components\n\n| Component | Crate | Vai trò |\n|-----------|-------|---------|\n| **LLM Engine** | `llm` | Xử lý ngôn ngữ, ra quyết định |\n| **Executor** | `core` | Điều phối và thực thi hành động |\n| **Risk Guard** | `security` | Đánh giá rủi ro theo thời gian thực |\n| **Permission Gate** | `permission` | Kiểm soát quyền truy cập |\n| **OS Interaction** | `os` | Tương tác hệ điều hành |\n| **UI Automation** | `desktop` | Điều khiển giao diện, chuột, bàn phím |\n| **Vision** | `vision` | Nhận diện và phân tích màn hình |\n| **Task Manager** | `task` | Quản lý hàng đợi và lịch trình tác vụ |\n| **Telemetry** | `telemetry` | Giám sát, log, quan sát hệ thống |\n| **Utils** | `utils` | Thư viện dùng chung |\n\n\n## Memory System\n\n```mermaid\nflowchart LR\n    subgraph STM[\"⚡ Short-term Memory\"]\n        SC[\"Session Context\"]\n        EF[\"Execution Flow\"]\n        TH[\"Turn History\"]\n    end\n\n    subgraph LTM[\"🗄️ Long-term Memory\"]\n        UP[\"User Preferences\"]\n        BL[\"Behavior Learning\"]\n        KN[\"Knowledge Store\"]\n    end\n\n    subgraph RAG[\"🔍 RAG Engine\"]\n        EM[\"Embedding\"]\n        RE[\"Retrieval\"]\n        AU[\"Augmentation\"]\n    end\n\n    INPUT[\"Đầu vào mới\"] --> STM\n    STM --> LLM[\"LLM Brain\"]\n    LTM --> RAG\n    RAG --> LLM\n    LLM --> OUTPUT[\"Hành động / Phản hồi\"]\n    OUTPUT --> LTM\n```\n\n**Short-term Memory** lưu ngữ cảnh trong phiên làm việc hiện tại \u2014 luồng thực thi, lịch sử hội thoại, trạng thái tác vụ.\n\n**Long-term Memory** lưu trữ bền vững \u2014 thói quen người dùng, tri thức tích lũy, hành vi thích nghi theo thời gian. Được truy xuất thông qua RAG để làm giàu ngữ cảnh cho LLM.\n\n\n## Safety & Permissions\n\n```mermaid\nflowchart TD\n    ACTION[\"Hành động yêu cầu\"] --> ASSESS[\"Đánh giá rủi ro\"]\n\n    ASSESS --> L1{\"Mức độ rủi ro\"}\n\n    L1 -- \"🟢 Thấp\" --> AUTO[\"Tự động thực thi\"]\n    L1 -- \"🟡 Trung bình\" --> LOG[\"Ghi log & thực thi\"]\n    L1 -- \"🔴 Cao\" --> APPROVAL[\"Yêu cầu phê duyệt\"]\n    L1 -- \"⛔ Nguy hiểm\" --> BLOCK[\"Chặn hoàn toàn\"]\n\n    APPROVAL -- \"✅ Cho phép\" --> AUTO\n    APPROVAL -- \"❌ Từ chối\" --> BLOCK\n\n    AUTO --> MONITOR[\"Giám sát thời gian thực\\n(Network · File · Process)\"]\n    MONITOR --> QUARANTINE[\"Cách ly nếu phát hiện bất thường\"]\n```\n\nCác cơ chế bảo vệ hoạt động song song:\n- **Risk Assessment** \u2014 chấm điểm rủi ro trước mỗi hành động\n- **Permission Gate** \u2014 xác thực quyền truy cập theo từng scope\n- **Real-time Monitoring** \u2014 giám sát mạng, file, process liên tục\n- **Quarantine** \u2014 cách ly và vô hiệu hóa mối đe dọa tự động\n\n\n## Plugin System\n\n```mermaid\ngraph LR\n    subgraph CORE_BOX[\"Core Agent (Protected)\"]\n        CORE[\"Core Runtime\"]\n        API[\"Plugin API\"]\n    end\n\n    subgraph PLUGIN_BOX[\"Plugin Layer (Isolated)\"]\n        PA[\"weather_plugin\"]\n        PB[\"custom_plugin\"]\n        PC[\"Plugin N...\"]\n    end\n\n    CORE --> API\n    API <-.->|\"Giao tiếp\\nqua interface\"| PA & PB & PC\n\n    PA & PB & PC -. \"Không truy cập\\ntrực tiếp\" .- CORE\n```\n\nPlugin được load độc lập và giao tiếp với core thông qua interface định sẵn. Mọi plugin đều bị sandbox \u2014 không thể truy cập trực tiếp vào core runtime, memory hay security layer.\n\n\n## Highlights\n\n- **Dual Memory System** (Short-term & Long-term)\n- **Tool Calling & Action Execution**\n- **Retrieval-Augmented Generation (RAG)**\n- **Plugin-based Architecture** (isolated from core)\n- **Real-time Safety & Permission Control**\n- **Self-learning & Adaptive Behavior**\n- **Vision & Screen Understanding**\n- **OS-level Interaction**\n- **Telemetry & Observability**\n"
+    },
+    {
+      "id": "defender",
+      "label": "Core Defender",
+      "status": "ideation",
+      "lang": [
+        "assembly",
+        "rust",
+        "c++"
+      ],
+      "description": "Core Defender is a dual-mode security and incident response system designed for threat detection, forensic analysis, and real-time system monitoring. It operates in an offline bootable forensic mode (WinPE) for deep system inspection and recovery, and a live monitoring mode for runtime observation of system behavior.",
+      "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z\"/><path d=\"M9 12l2 2 4-4\"/></svg>",
+      "links": {
+        "github": null,
+        "demo": null
+      },
+      "highlights": [
+        "Offline forensic boot (WinPE environment)",
+        "Real-time system monitoring agent",
+        "Process, network, and file activity tracking",
+        "Risk detection and permission-based intervention",
+        "Isolated logging and evidence protection strategy",
+        "Malware-resistant monitoring design considerations"
+      ],
+      "specs": [
+        {
+          "label": "STATUS",
+          "value": "ideation",
+          "accent": true
+        },
+        {
+          "label": "STACK",
+          "value": "ASM · Rust · C++"
+        },
+        {
+          "label": "MODE",
+          "value": "Forensic"
+        }
+      ],
+      "breakdown": [
+        {
+          "label": "Forensic",
+          "value": 40
+        },
+        {
+          "label": "Monitor",
+          "value": 35
+        },
+        {
+          "label": "Response",
+          "value": 25
+        }
+      ],
+      "roadmap": [
+        {
+          "label": "Research",
+          "status": "active"
+        },
+        {
+          "label": "Prototype",
+          "status": "planned"
+        },
+        {
+          "label": "Beta",
+          "status": "planned"
+        }
+      ],
+      "content": "## Ý tưởng\nHệ thống an ninh và ứng cứu sự cố hai chế độ: forensic offline qua WinPE và giám sát runtime.\n\n## Luồng giám sát\n```mermaid\nflowchart TD\n  Sys[System Events] --> Mon[Monitor]\n  Mon --> Risk{Risk}\n  Risk -->|yes| Quar[Quarantine]\n  Risk -->|no| Log[(Isolated Log)]\n```\n\n## Hướng đi tương lai\n- Tăng độ bền trước malware\n- Bảo vệ bằng chứng"
+    },
+    {
+      "id": "services",
+      "label": "Core Services",
+      "status": "in-progress",
+      "lang": [
+        "rust",
+        "python",
+        "c++"
+      ],
+      "description": "A shared backend services layer providing reusable infrastructure components such as background jobs, backups, DevOps automation, and system utilities for multiple applications.",
+      "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M12 3l9 5-9 5-9-5 9-5z\"/><path d=\"M3 12l9 5 9-5M3 16l9 5 9-5\"/></svg>",
+      "links": {
+        "github": {
+          "src": "https://github.com/tuanca2503/core-services",
+          "visibility": "private"
+        },
+        "demo": null
+      },
+      "highlights": [
+        "Async I/O",
+        "Config management",
+        "Plugin system",
+        "Background job processing",
+        "Backup automation",
+        "DevOps utilities"
+      ],
+      "specs": [
+        {
+          "label": "STATUS",
+          "value": "in progress",
+          "accent": true
+        },
+        {
+          "label": "STACK",
+          "value": "Rust · Python · C++"
+        },
+        {
+          "label": "TYPE",
+          "value": "Backend"
+        }
+      ],
+      "breakdown": [
+        {
+          "label": "Jobs",
+          "value": 35
+        },
+        {
+          "label": "Backup",
+          "value": 25
+        },
+        {
+          "label": "DevOps",
+          "value": 25
+        },
+        {
+          "label": "Utils",
+          "value": 15
+        }
+      ],
+      "roadmap": [
+        {
+          "label": "Design",
+          "status": "done"
+        },
+        {
+          "label": "Core",
+          "status": "active"
+        },
+        {
+          "label": "Integrate",
+          "status": "planned"
+        }
+      ],
+      "content": "## Ý tưởng\nLớp dịch vụ backend dùng chung: job nền, backup, tiện ích DevOps cho nhiều ứng dụng.\n\n## Kiến trúc\n```mermaid\nflowchart LR\n  App[Apps] --> API[Service API]\n  API --> Jobs[Job Queue]\n  API --> Backup[Backup]\n  Jobs --> Workers[Workers]\n```\n\n## Hướng đi tương lai\n- Thêm scheduler\n- Observability"
+    },
+    {
+      "id": "server",
+      "label": "Core Server",
+      "status": "in-progress",
+      "lang": [
+        "rust",
+        "c#"
+      ],
+      "description": "A central core server that acts as the foundation of the system, designed to branch into multiple services and applications such as web platforms, APIs, automation tools, and other domain-specific systems.",
+      "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"6\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"18\" height=\"6\" rx=\"1\"/><path d=\"M7 7h.01M7 17h.01\"/></svg>",
+      "links": {
+        "github": {
+          "src": "https://github.com/tuanca2503/core-server",
+          "visibility": "private"
+        },
+        "demo": null
+      },
+      "highlights": [
+        "Async I/O",
+        "Config management",
+        "Plugin system",
+        "Background job processing",
+        "Backup automation",
+        "DevOps utilities"
+      ],
+      "specs": [
+        {
+          "label": "STATUS",
+          "value": "in progress",
+          "accent": true
+        },
+        {
+          "label": "STACK",
+          "value": "Rust · C#"
+        },
+        {
+          "label": "ROLE",
+          "value": "Core"
+        }
+      ],
+      "breakdown": [
+        {
+          "label": "Core",
+          "value": 40
+        },
+        {
+          "label": "API",
+          "value": 30
+        },
+        {
+          "label": "Plugins",
+          "value": 30
+        }
+      ],
+      "roadmap": [
+        {
+          "label": "Design",
+          "status": "done"
+        },
+        {
+          "label": "Core",
+          "status": "active"
+        },
+        {
+          "label": "Scale",
+          "status": "planned"
+        }
+      ],
+      "content": "## Ý tưởng\nServer lõi làm nền tảng, phân nhánh thành web, API, automation và các hệ chuyên biệt.\n\n## Kiến trúc\n```mermaid\nflowchart TD\n  Core[Core Server] --> Web[Web]\n  Core --> API[API]\n  Core --> Auto[Automation]\n```\n\n## Hướng đi tương lai\n- Plugin runtime\n- Multi-tenant"
+    },
+    {
+      "id": "database",
+      "label": "Core Database",
+      "status": "in-progress",
+      "lang": [
+        "rust",
+        "python"
+      ],
+      "description": "Core Database is a shared foundational data infrastructure designed to support multiple future applications. It provides a unified data layer and scalable backend foundation for systems such as web platforms, mobile apps, crypto services, media platforms, e-commerce, chat networks, and more.",
+      "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><ellipse cx=\"12\" cy=\"6\" rx=\"8\" ry=\"3\"/><path d=\"M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3\"/></svg>",
+      "links": {
+        "github": {
+          "src": "https://github.com/tuanca2503/core-database",
+          "visibility": "private"
+        },
+        "demo": null
+      },
+      "highlights": [
+        "Unified data layer for multiple products",
+        "Scalable backend foundation",
+        "Multi-domain support (web, app, crypto, media, e-commerce, chat)",
+        "High-performance data access",
+        "Extensible architecture for future services",
+        "Cross-project data consistency"
+      ],
+      "specs": [
+        {
+          "label": "STATUS",
+          "value": "in progress",
+          "accent": true
+        },
+        {
+          "label": "STACK",
+          "value": "Rust · Python"
+        },
+        {
+          "label": "LAYER",
+          "value": "Data"
+        }
+      ],
+      "breakdown": [
+        {
+          "label": "Storage",
+          "value": 45
+        },
+        {
+          "label": "Access",
+          "value": 30
+        },
+        {
+          "label": "Sync",
+          "value": 25
+        }
+      ],
+      "roadmap": [
+        {
+          "label": "Schema",
+          "status": "done"
+        },
+        {
+          "label": "Core",
+          "status": "active"
+        },
+        {
+          "label": "Sharding",
+          "status": "planned"
+        }
+      ],
+      "content": "## Ý tưởng\nHạ tầng dữ liệu nền dùng chung cho nhiều sản phẩm: web, app, crypto, media, e-commerce, chat.\n\n## Kiến trúc\n```mermaid\nflowchart LR\n  Apps[Apps] --> DAL[Data Access]\n  DAL --> Store[(Storage)]\n  DAL --> Cache[(Cache)]\n  Store --> Sync[Sync]\n```\n\n## Hướng đi tương lai\n- Sharding\n- Đồng bộ đa vùng"
+    },
+    {
+      "id": "os",
+      "label": "Core OS",
+      "status": "ideation",
+      "lang": [
+        "rust",
+        "assembly",
+        "c++"
+      ],
+      "description": "Core OS is a modular and customizable operating system layer designed to optimize and simplify system architecture. It serves as a unified runtime foundation that integrates with multiple applications while allowing users to personalize, manage, and control system behavior according to their preferences.",
+      "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"2\"/><path d=\"M7 9l3 3-3 3M13 15h4\"/></svg>",
+      "links": {
+        "github": {
+          "src": "https://github.com/tuanca2503/core-os",
+          "visibility": "private"
+        },
+        "demo": null
+      },
+      "highlights": [
+        "Modular and lightweight OS architecture",
+        "System optimization and simplification",
+        "Unified integration layer for applications",
+        "User-customizable system behavior",
+        "Personalized system management",
+        "Extensible ecosystem for future projects"
+      ],
+      "specs": [
+        {
+          "label": "STATUS",
+          "value": "ideation",
+          "accent": true
+        },
+        {
+          "label": "STACK",
+          "value": "Rust · ASM · C++"
+        },
+        {
+          "label": "TYPE",
+          "value": "Runtime"
+        }
+      ],
+      "breakdown": [
+        {
+          "label": "Kernel",
+          "value": 40
+        },
+        {
+          "label": "Runtime",
+          "value": 35
+        },
+        {
+          "label": "Tooling",
+          "value": 25
+        }
+      ],
+      "roadmap": [
+        {
+          "label": "Concept",
+          "status": "active"
+        },
+        {
+          "label": "Kernel",
+          "status": "planned"
+        },
+        {
+          "label": "Userland",
+          "status": "planned"
+        }
+      ],
+      "content": "## Ý tưởng\nLớp hệ điều hành module hoá, tối ưu và cho phép người dùng tuỳ biến hành vi hệ thống.\n\n## Kiến trúc\n```mermaid\nflowchart TD\n  HW[Hardware] --> Kernel[Kernel]\n  Kernel --> Runtime[Runtime]\n  Runtime --> Apps[Applications]\n  User[User Config] --> Runtime\n```\n\n## Hướng đi tương lai\n- Kernel module hoá\n- Hệ sinh thái mở rộng"
+    },
+    {
+      "id": "drawing-space",
+      "label": "Drawing Space",
+      "status": "live-enhancement",
+      "lang": [],
+      "description": "A simple space for sketching and drawing, used to express my personal interests and hobbies.",
+      "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M4 20l4-1 11-11-3-3L5 16l-1 4z\"/></svg>",
+      "links": {
+        "github": {
+          "src": "https://github.com/tuanca2503/drawing-space",
+          "visibility": "public"
+        },
+        "demo": null
+      },
+      "highlights": [
+        "Chill"
+      ],
+      "specs": [
+        {
+          "label": "STATUS",
+          "value": "completed",
+          "accent": true
+        }
+      ],
+      "breakdown": [
+        {
+          "label": "Sketch",
+          "value": 100
+        }
+      ],
+      "roadmap": [
+        {
+          "label": "Done",
+          "status": "done"
+        }
+      ],
+      "content": "## Ghi chú\nGóc vẽ vời cho vui, thể hiện sở thích cá nhân."
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "status": {
+      "ideation": "#a78bfa",
+      "in-progress": "#EF9F27",
+      "completed": "#5DCAA5",
+      "live-enhancement": "#3B82F6",
+      "//roadmap": "",
+      "active": "#ff3b3b",
+      "done": "#5DCAA5"
+    },
+    "palette": [
+      "#ff3b3b",
+      "#5DCAA5",
+      "#378ADD",
+      "#EF9F27",
+      "#a78bfa",
+      "#888780"
+    ]
+  }
+}
